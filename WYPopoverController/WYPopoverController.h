@@ -96,6 +96,7 @@ typedef NS_OPTIONS(NSUInteger, WYPopoverAnimationOptions) {
 @property (nonatomic, weak) id <WYPopoverControllerDelegate> delegate;
 
 @property (nonatomic, copy) NSArray                            *passthroughViews;
+@property (nonatomic, copy) NSArray                            *peekThroughViews;
 @property (nonatomic, assign) BOOL                              wantsDefaultContentAppearance;
 @property (nonatomic, assign) UIEdgeInsets                      popoverLayoutMargins;
 @property (nonatomic, readonly, getter=isPopoverVisible) BOOL   popoverVisible;

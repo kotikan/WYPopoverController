@@ -1590,6 +1590,7 @@ static float edgeSizeFromCornerRadius(float cornerRadius) {
 
 @synthesize delegate;
 @synthesize passthroughViews;
+@synthesize peekThroughViews;
 @synthesize wantsDefaultContentAppearance;
 @synthesize popoverVisible;
 @synthesize popoverLayoutMargins;
@@ -2010,6 +2011,13 @@ static WYPopoverTheme *defaultTheme_ = nil;
         } completion:^(BOOL finished) {
             completionBlock(YES);
         }];
+        for (UIView *view in peekThroughViews) {
+            view.alpha = 1;
+            CGRect frame = [overlayView convertRect:view.frame fromView:view.superview];
+            [view removeFromSuperview];
+            view.frame = frame;
+            [overlayView addSubview:view];
+        }
     }
     else
     {
@@ -2525,7 +2533,7 @@ static WYPopoverTheme *defaultTheme_ = nil;
         backgroundView.frame = containerFrame;
     }
     
-    WY_LOG(@"popoverContainerView.frame = %@", NSStringFromCGRect(backgroundView.frame));
+//    WY_LOG(@"popoverContainerView.frame = %@", NSStringFromCGRect(backgroundView.frame));
 }
 
 - (void)dismissPopoverAnimated:(BOOL)aAnimated
@@ -2624,6 +2632,9 @@ static WYPopoverTheme *defaultTheme_ = nil;
                 if (strongSelf)
                 {
                     strongSelf->overlayView.alpha = 0;
+                    for (UIView *view in peekThroughViews) {
+                        view.alpha = 0;
+                    }
                 }
             } completion:^(BOOL finished) {
                 afterCompletionBlock();
