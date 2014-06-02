@@ -1550,7 +1550,10 @@ static float edgeSizeFromCornerRadius(float cornerRadius) {
     BOOL                     isInterfaceOrientationChanging;
     __weak UIBarButtonItem  *barButtonItem;
     CGRect                   keyboardRect;
-    
+    CGRect                   originalStatusBarFrame;
+    CGRect                   transitioningToStatusBarFrame;
+    CGRect                   originalViewFrame;
+
     WYPopoverAnimationOptions options;
     
     BOOL themeUpdatesEnabled;
@@ -1685,6 +1688,8 @@ static WYPopoverTheme *defaultTheme_ = nil;
         themeUpdatesEnabled = YES;
         
         popoverContentSize_ = CGSizeZero;
+        originalViewFrame = CGRectNull;
+        transitioningToStatusBarFrame = CGRectNull;
     }
     
     return self;
@@ -1906,7 +1911,8 @@ static WYPopoverTheme *defaultTheme_ = nil;
     permittedArrowDirections = aArrowDirections;
     animated = aAnimated;
     options = aOptions;
-    
+    originalStatusBarFrame = [[UIApplication sharedApplication] statusBarFrame];
+
     CGSize contentViewSize = self.popoverContentSize;
     
     if (overlayView == nil)
@@ -2028,7 +2034,11 @@ static WYPopoverTheme *defaultTheme_ = nil;
     if (isListeningNotifications == NO)
     {
         isListeningNotifications = YES;
-        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(willChangeStatusBarFrame:)
+                                                     name:UIApplicationWillChangeStatusBarFrameNotification
+                                                   object:nil];
+
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(didChangeStatusBarOrientation:)
                                                      name:UIApplicationDidChangeStatusBarOrientationNotification
@@ -2240,11 +2250,14 @@ static WYPopoverTheme *defaultTheme_ = nil;
     
     overlayView.bounds = inView.window.bounds;
     backgroundView.transform = CGAffineTransformIdentity;
-    
-    viewFrame = [inView convertRect:rect toView:nil];
-    
-    viewFrame = WYRectInWindowBounds(viewFrame, orientation);
-    
+
+
+    if (CGRectIsNull(originalViewFrame)) {
+        originalViewFrame = [inView convertRect:rect toView:nil];
+        originalViewFrame = WYRectInWindowBounds(originalViewFrame, orientation);
+    }
+    viewFrame = originalViewFrame;
+
     minX = popoverLayoutMargins.left;
     maxX = overlayWidth - popoverLayoutMargins.right;
     minY = WYStatusBarHeight() + popoverLayoutMargins.top;
@@ -2513,7 +2526,14 @@ static WYPopoverTheme *defaultTheme_ = nil;
             containerFrame.origin.y -= yOffset;
         }
     }
-    
+
+    // status bar support
+    if (!CGRectIsNull(transitioningToStatusBarFrame)) {
+        CGFloat yOffset = transitioningToStatusBarFrame.size.height - originalStatusBarFrame.size.height;
+        containerFrame.origin.y += yOffset;
+        transitioningToStatusBarFrame = CGRectNull;
+    }
+
     CGPoint containerOrigin = containerFrame.origin;
     
     backgroundView.transform = CGAffineTransformMakeRotation(WYInterfaceOrientationAngleOfOrientation(orientation));
@@ -2525,7 +2545,7 @@ static WYPopoverTheme *defaultTheme_ = nil;
     if (aAnimated == YES) {
         backgroundView.frame = savedContainerFrame;
         __weak __typeof__(self) weakSelf = self;
-        [UIView animateWithDuration:0.10f animations:^{
+        [UIView animateWithDuration:0.35f animations:^{
             __typeof__(self) strongSelf = weakSelf;
             strongSelf->backgroundView.frame = containerFrame;
         }];
@@ -3079,6 +3099,22 @@ static CGPoint WYPointRelativeToOrientation(CGPoint origin, CGSize size, UIInter
 }
 
 #pragma mark Selectors
+
+- (void)willChangeStatusBarFrame:(NSNotification *)notification
+{
+    NSValue* rectValue = [[notification userInfo] valueForKey:UIApplicationStatusBarFrameUserInfoKey];
+    transitioningToStatusBarFrame = [rectValue CGRectValue];
+    CGFloat offset = transitioningToStatusBarFrame.size.height - originalStatusBarFrame.size.height;
+    [UIView animateWithDuration:0.35
+                          delay:0
+                        options:UIViewAnimationOptionCurveEaseInOut
+                     animations:^{
+                         CGRect frame = inView.window.bounds;
+                         overlayView.frame = CGRectOffset(frame, 0, offset);
+                     }
+                     completion:nil];
+    [self positionPopover:YES];
+}
 
 - (void)didChangeStatusBarOrientation:(NSNotification *)notification
 {
