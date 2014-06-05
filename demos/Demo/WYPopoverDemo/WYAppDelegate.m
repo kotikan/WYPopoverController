@@ -10,6 +10,7 @@
 #import "WYPopoverController.h"
 #import "WYSettingsViewController.h"
 #import "WYAllDirectionsViewController.h"
+#import "WYPopoverBackgroundView.h"
 
 @implementation WYAppDelegate
 

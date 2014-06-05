@@ -26,9 +26,8 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 #import <QuartzCore/QuartzCore.h>
-
-@protocol WYPopoverControllerDelegate;
-@class WYPopoverTheme;
+#import "WYPopoverControllerDelegate.h"
+#import "WYPopoverTheme.h"
 
 #ifndef WY_POPOVER_DEFAULT_ANIMATION_DURATION
     #define WY_POPOVER_DEFAULT_ANIMATION_DURATION    .25f
@@ -53,43 +52,6 @@ typedef NS_OPTIONS(NSUInteger, WYPopoverAnimationOptions) {
     WYPopoverAnimationOptionScale = 1UL << 1,
     WYPopoverAnimationOptionFadeWithScale = WYPopoverAnimationOptionFade | WYPopoverAnimationOptionScale
 };
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-@interface WYPopoverBackgroundView : UIView
-
-@property (nonatomic, strong) UIColor *tintColor                UI_APPEARANCE_SELECTOR;
-@property (nonatomic, strong) UIColor *fillTopColor             UI_APPEARANCE_SELECTOR;
-@property (nonatomic, strong) UIColor *fillBottomColor          UI_APPEARANCE_SELECTOR;
-
-@property (nonatomic, strong) UIColor *glossShadowColor         UI_APPEARANCE_SELECTOR;
-@property (nonatomic, assign) CGSize   glossShadowOffset        UI_APPEARANCE_SELECTOR;
-@property (nonatomic, assign) NSUInteger  glossShadowBlurRadius    UI_APPEARANCE_SELECTOR;
-
-@property (nonatomic, assign) NSUInteger  borderWidth              UI_APPEARANCE_SELECTOR;
-@property (nonatomic, assign) NSUInteger  arrowBase                UI_APPEARANCE_SELECTOR;
-@property (nonatomic, assign) NSUInteger  arrowHeight              UI_APPEARANCE_SELECTOR;
-
-@property (nonatomic, strong) UIColor *outerShadowColor         UI_APPEARANCE_SELECTOR;
-@property (nonatomic, strong) UIColor *outerStrokeColor         UI_APPEARANCE_SELECTOR;
-@property (nonatomic, assign) NSUInteger  outerShadowBlurRadius    UI_APPEARANCE_SELECTOR;
-@property (nonatomic, assign) CGSize   outerShadowOffset        UI_APPEARANCE_SELECTOR;
-@property (nonatomic, assign) NSUInteger  outerCornerRadius        UI_APPEARANCE_SELECTOR;
-@property (nonatomic, assign) NSUInteger  minOuterCornerRadius     UI_APPEARANCE_SELECTOR;
-
-@property (nonatomic, strong) UIColor *innerShadowColor         UI_APPEARANCE_SELECTOR;
-@property (nonatomic, strong) UIColor *innerStrokeColor         UI_APPEARANCE_SELECTOR;
-@property (nonatomic, assign) NSUInteger  innerShadowBlurRadius    UI_APPEARANCE_SELECTOR;
-@property (nonatomic, assign) CGSize   innerShadowOffset        UI_APPEARANCE_SELECTOR;
-@property (nonatomic, assign) NSUInteger  innerCornerRadius        UI_APPEARANCE_SELECTOR;
-
-@property (nonatomic, assign) UIEdgeInsets viewContentInsets    UI_APPEARANCE_SELECTOR;
-
-@property (nonatomic, strong) UIColor *overlayColor             UI_APPEARANCE_SELECTOR;
-
-@end
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 @interface WYPopoverController : NSObject <UIAppearanceContainer>
 
@@ -193,63 +155,5 @@ typedef NS_OPTIONS(NSUInteger, WYPopoverAnimationOptions) {
 - (void)dismissPopoverAnimated:(BOOL)animated
                        options:(WYPopoverAnimationOptions)aOptions
                     completion:(void (^)(void))completion;
-
-@end
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-@protocol WYPopoverControllerDelegate <NSObject>
-@optional
-
-- (BOOL)popoverControllerShouldDismissPopover:(WYPopoverController *)popoverController;
-
-- (void)popoverControllerDidPresentPopover:(WYPopoverController *)popoverController;
-
-- (void)popoverControllerDidDismissPopover:(WYPopoverController *)popoverController;
-
-- (void)popoverController:(WYPopoverController *)popoverController willRepositionPopoverToRect:(inout CGRect *)rect inView:(inout UIView **)view;
-
-- (BOOL)popoverControllerShouldIgnoreKeyboardBounds:(WYPopoverController *)popoverController;
-
-- (void)popoverController:(WYPopoverController *)popoverController willTranslatePopoverWithYOffset:(float *)value;
-
-@end
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-@interface WYPopoverTheme : NSObject
-
-@property (nonatomic, strong) UIColor *tintColor;
-@property (nonatomic, strong) UIColor *fillTopColor;
-@property (nonatomic, strong) UIColor *fillBottomColor;
-
-@property (nonatomic, strong) UIColor *glossShadowColor;
-@property (nonatomic, assign) CGSize   glossShadowOffset;
-@property (nonatomic, assign) NSUInteger  glossShadowBlurRadius;
-
-@property (nonatomic, assign) NSUInteger  borderWidth;
-@property (nonatomic, assign) NSUInteger  arrowBase;
-@property (nonatomic, assign) NSUInteger  arrowHeight;
-
-@property (nonatomic, strong) UIColor *outerShadowColor;
-@property (nonatomic, strong) UIColor *outerStrokeColor;
-@property (nonatomic, assign) NSUInteger  outerShadowBlurRadius;
-@property (nonatomic, assign) CGSize   outerShadowOffset;
-@property (nonatomic, assign) NSUInteger  outerCornerRadius;
-@property (nonatomic, assign) NSUInteger  minOuterCornerRadius;
-
-@property (nonatomic, strong) UIColor *innerShadowColor;
-@property (nonatomic, strong) UIColor *innerStrokeColor;
-@property (nonatomic, assign) NSUInteger  innerShadowBlurRadius;
-@property (nonatomic, assign) CGSize   innerShadowOffset;
-@property (nonatomic, assign) NSUInteger  innerCornerRadius;
-
-@property (nonatomic, assign) UIEdgeInsets viewContentInsets;
-
-@property (nonatomic, strong) UIColor *overlayColor;
-
-+ (instancetype)theme;
-+ (instancetype)themeForIOS6;
-+ (instancetype)themeForIOS7;
 
 @end

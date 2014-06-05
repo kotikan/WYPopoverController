@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2DBA154E56127ECAF597EAFB /* WYPopoverBackgroundInnerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DBA15192D917BECFA928333 /* WYPopoverBackgroundInnerView.m */; };
+		2DBA1711B5E0F82B2ACFC182 /* UIColor+WYPopover.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DBA1273360D39EAB5E9C8D9 /* UIColor+WYPopover.m */; };
+		2DBA171498316A8846D933E3 /* WYPopoverTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DBA12CDA9286C4D2201141F /* WYPopoverTheme.m */; };
+		2DBA1B4791FA79FC12EE3287 /* WYPopoverBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DBA1F69C3ABCA74105E8435 /* WYPopoverBackgroundView.m */; };
 		9722D80417C1667E000D922B /* button-highlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 9722D80017C1667E000D922B /* button-highlighted.png */; };
 		9722D80517C1667E000D922B /* button-highlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9722D80117C1667E000D922B /* button-highlighted@2x.png */; };
 		9722D80617C1667E000D922B /* button-normal.png in Resources */ = {isa = PBXBuildFile; fileRef = 9722D80217C1667E000D922B /* button-normal.png */; };
@@ -31,6 +35,17 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2DBA1273360D39EAB5E9C8D9 /* UIColor+WYPopover.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+WYPopover.m"; sourceTree = "<group>"; };
+		2DBA12CDA9286C4D2201141F /* WYPopoverTheme.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WYPopoverTheme.m; sourceTree = "<group>"; };
+		2DBA1309DE56B2D6DEEA1A89 /* WYPopoverBackgroundViewDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WYPopoverBackgroundViewDelegate.h; sourceTree = "<group>"; };
+		2DBA15192D917BECFA928333 /* WYPopoverBackgroundInnerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WYPopoverBackgroundInnerView.m; sourceTree = "<group>"; };
+		2DBA15DDE7DDE452C1E24411 /* WYBasics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WYBasics.h; sourceTree = "<group>"; };
+		2DBA182F76EDF121FC6F4B4D /* WYPopoverControllerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WYPopoverControllerDelegate.h; sourceTree = "<group>"; };
+		2DBA1BD40BF39DB0341E6353 /* WYPopoverTheme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WYPopoverTheme.h; sourceTree = "<group>"; };
+		2DBA1F22AA8D7374971A2206 /* WYPopoverBackgroundView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WYPopoverBackgroundView.h; sourceTree = "<group>"; };
+		2DBA1F372909652295E3B814 /* UIColor+WYPopover.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+WYPopover.h"; sourceTree = "<group>"; };
+		2DBA1F69C3ABCA74105E8435 /* WYPopoverBackgroundView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WYPopoverBackgroundView.m; sourceTree = "<group>"; };
+		2DBA1F80B13270F3133E715B /* WYPopoverBackgroundInnerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WYPopoverBackgroundInnerView.h; sourceTree = "<group>"; };
 		9722D80017C1667E000D922B /* button-highlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "button-highlighted.png"; sourceTree = "<group>"; };
 		9722D80117C1667E000D922B /* button-highlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "button-highlighted@2x.png"; sourceTree = "<group>"; };
 		9722D80217C1667E000D922B /* button-normal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "button-normal.png"; sourceTree = "<group>"; };
@@ -161,6 +176,17 @@
 				97FA5C2D17D1A82E00F611A0 /* WYPopoverController.m */,
 				97FA5C2E17D1A82E00F611A0 /* WYStoryboardPopoverSegue.h */,
 				97FA5C2F17D1A82E00F611A0 /* WYStoryboardPopoverSegue.m */,
+				2DBA182F76EDF121FC6F4B4D /* WYPopoverControllerDelegate.h */,
+				2DBA1F22AA8D7374971A2206 /* WYPopoverBackgroundView.h */,
+				2DBA1F69C3ABCA74105E8435 /* WYPopoverBackgroundView.m */,
+				2DBA1BD40BF39DB0341E6353 /* WYPopoverTheme.h */,
+				2DBA12CDA9286C4D2201141F /* WYPopoverTheme.m */,
+				2DBA1F80B13270F3133E715B /* WYPopoverBackgroundInnerView.h */,
+				2DBA15192D917BECFA928333 /* WYPopoverBackgroundInnerView.m */,
+				2DBA1309DE56B2D6DEEA1A89 /* WYPopoverBackgroundViewDelegate.h */,
+				2DBA15DDE7DDE452C1E24411 /* WYBasics.h */,
+				2DBA1F372909652295E3B814 /* UIColor+WYPopover.h */,
+				2DBA1273360D39EAB5E9C8D9 /* UIColor+WYPopover.m */,
 			);
 			name = WYPopoverController;
 			path = ../../../WYPopoverController;
@@ -257,6 +283,10 @@
 				97FA5C3017D1A82E00F611A0 /* WYPopoverController.m in Sources */,
 				9767EC6518354C73007D283B /* WYModalViewController.m in Sources */,
 				97FA5C3117D1A82E00F611A0 /* WYStoryboardPopoverSegue.m in Sources */,
+				2DBA1B4791FA79FC12EE3287 /* WYPopoverBackgroundView.m in Sources */,
+				2DBA171498316A8846D933E3 /* WYPopoverTheme.m in Sources */,
+				2DBA154E56127ECAF597EAFB /* WYPopoverBackgroundInnerView.m in Sources */,
+				2DBA1711B5E0F82B2ACFC182 /* UIColor+WYPopover.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
