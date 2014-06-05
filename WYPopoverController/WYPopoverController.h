@@ -38,6 +38,8 @@
     #define WY_POPOVER_MIN_SIZE                      CGSizeMake(240, 160)
 #endif
 
+#define WYPopoverWillChangeBannerFrameNotification @"WYPopoverWillChangeBannerFrameNotification"
+
 typedef NS_OPTIONS(NSUInteger, WYPopoverArrowDirection) {
     WYPopoverArrowDirectionUp = 1UL << 0,
     WYPopoverArrowDirectionDown = 1UL << 1,
@@ -212,6 +214,8 @@ typedef NS_OPTIONS(NSUInteger, WYPopoverAnimationOptions) {
 - (BOOL)popoverControllerShouldIgnoreKeyboardBounds:(WYPopoverController *)popoverController;
 
 - (void)popoverController:(WYPopoverController *)popoverController willTranslatePopoverWithYOffset:(float *)value;
+
+- (CGRect)bannerFrame;
 
 @end
 

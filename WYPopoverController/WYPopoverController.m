@@ -1551,7 +1551,9 @@ static float edgeSizeFromCornerRadius(float cornerRadius) {
     __weak UIBarButtonItem  *barButtonItem;
     CGRect                   keyboardRect;
     CGRect                   originalStatusBarFrame;
+    CGRect                   originalBannerFrame;
     CGRect                   transitioningToStatusBarFrame;
+    CGRect                   transitioningToBannerFrame;
     CGRect                   originalViewFrame;
 
     WYPopoverAnimationOptions options;
@@ -1912,6 +1914,13 @@ static WYPopoverTheme *defaultTheme_ = nil;
     animated = aAnimated;
     options = aOptions;
     originalStatusBarFrame = [[UIApplication sharedApplication] statusBarFrame];
+    if ([self.delegate respondsToSelector:@selector(bannerFrame)]) {
+        originalBannerFrame = [self.delegate bannerFrame];
+    } else {
+        originalBannerFrame = CGRectNull;
+    }
+    NSLog(@"presentPopoverFromRect, originalBannerFrame:%@", NSStringFromCGRect(originalBannerFrame));
+    transitioningToBannerFrame = CGRectNull;
 
     CGSize contentViewSize = self.popoverContentSize;
     
@@ -2037,6 +2046,11 @@ static WYPopoverTheme *defaultTheme_ = nil;
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(willChangeStatusBarFrame:)
                                                      name:UIApplicationWillChangeStatusBarFrameNotification
+                                                   object:nil];
+
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(willChangeBannerFrame:)
+                                                     name:WYPopoverWillChangeBannerFrameNotification
                                                    object:nil];
 
         [[NSNotificationCenter defaultCenter] addObserver:self
@@ -2532,6 +2546,14 @@ static WYPopoverTheme *defaultTheme_ = nil;
         CGFloat yOffset = transitioningToStatusBarFrame.size.height - originalStatusBarFrame.size.height;
         containerFrame.origin.y += yOffset;
         transitioningToStatusBarFrame = CGRectNull;
+    }
+    // banner support
+    if (!CGRectIsNull(transitioningToBannerFrame)) {
+        NSLog(@"positionPopover, transitioningToBannerFrame:%@", NSStringFromCGRect(transitioningToBannerFrame));
+        CGFloat yOffset = transitioningToBannerFrame.size.height - originalBannerFrame.size.height;
+        NSLog(@"positionPopover, yOffset:%f", yOffset);
+        containerFrame.origin.y += yOffset;
+        transitioningToBannerFrame = CGRectNull;
     }
 
     CGPoint containerOrigin = containerFrame.origin;
@@ -3105,6 +3127,29 @@ static CGPoint WYPointRelativeToOrientation(CGPoint origin, CGSize size, UIInter
     NSValue* rectValue = [[notification userInfo] valueForKey:UIApplicationStatusBarFrameUserInfoKey];
     transitioningToStatusBarFrame = [rectValue CGRectValue];
     CGFloat offset = transitioningToStatusBarFrame.size.height - originalStatusBarFrame.size.height;
+    [UIView animateWithDuration:0.35
+                          delay:0
+                        options:UIViewAnimationOptionCurveEaseInOut
+                     animations:^{
+                         CGRect frame = inView.window.bounds;
+                         overlayView.frame = CGRectOffset(frame, 0, offset);
+                     }
+                     completion:nil];
+    [self positionPopover:YES];
+}
+
+- (void)willChangeBannerFrame:(NSNotification *)notification
+{
+    NSLog(@"willChangeBannerFrame, originalBannerFrame:%@", NSStringFromCGRect(originalBannerFrame));
+    if (CGRectIsNull(originalBannerFrame)) {
+        return;
+    }
+    NSValue* rectValue = [[notification userInfo] valueForKey:UIApplicationStatusBarFrameUserInfoKey];
+    NSLog(@"willChangeBannerFrame, rectValue: %@", rectValue);
+    transitioningToBannerFrame = [rectValue CGRectValue];
+    NSLog(@"willChangeBannerFrame, transitioningToBannerFrame:%@", NSStringFromCGRect(transitioningToBannerFrame));
+    CGFloat offset = transitioningToBannerFrame.size.height - originalBannerFrame.size.height;
+    NSLog(@"willChangeBannerFrame, offset:%f", offset);
     [UIView animateWithDuration:0.35
                           delay:0
                         options:UIViewAnimationOptionCurveEaseInOut
